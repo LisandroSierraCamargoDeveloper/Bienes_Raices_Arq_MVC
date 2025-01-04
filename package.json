@@ -5,8 +5,8 @@
     "main": "dist/app.js",
     "type": "module",
     "scripts": {
-        "start": "node  app.js",
-        "server": "nodemon app.js",
+        "start": "node  dist/app.js",
+        "server": "nodemon dist/app.js",
         "css": "postcss public/css/tailwind.css -o public/css/app.css --watch",
         "js": "webpack --watch",
         "dev": "concurrently    \"npm run css\"    \"npm run js\" ",
