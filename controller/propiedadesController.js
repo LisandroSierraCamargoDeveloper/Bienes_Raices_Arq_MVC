@@ -74,8 +74,8 @@ const admin = async (req, res) =>{
 
     
 
-// Formulario para crear una nueva propiedadgit 
-const crear = async (req, res) => {
+ //formulario para crear una nueva propiedadgit 
+ const crear = async (req, res) => {
     // Consultar Modelo de Precio y Categorias
     const [categorias, precios] = await Promise.all([
         Categoria.findAll(),
