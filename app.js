@@ -15,11 +15,6 @@ import db from './config/db.js';
 //crear la app
 const app = express()
 
-// Configuración de CSP
-//app.use((req, res, next) => {
- // res.setHeader("Content-Security-Policy", "script-src 'self' 'unsafe-eval'");
- // next();
-//});
 
 // Habilitar lectura de Datos de formularios:
 app.use(express.urlencoded({extended: true}))
@@ -32,7 +27,7 @@ app.use( csrf({cookie:true}) )
 
 // Conexion a la base de Datos
 try {
-  await  db.authenticate();
+  await db.authenticate();
   db.sync()
  console.log('conexion correcta a la base de  datos')
 }catch (error) {
