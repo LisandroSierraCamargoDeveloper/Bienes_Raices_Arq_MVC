@@ -2,7 +2,7 @@ import {check , validationResult} from 'express-validator'
 import bcrypt from 'bcrypt'
 import   Usuario from '../models/Usuario.js'
 import {generarId, generarJWT} from '../helpers/tokens.js'
-import {   emailOlvidePassword , emailRegistro} from '../helpers/emails.js'
+import { emailRegistro , emailOlvidePassword} from '../helpers/emails.js'
 
 
 
