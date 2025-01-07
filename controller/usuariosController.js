@@ -2,7 +2,7 @@ import {check , validationResult} from 'express-validator'
 import bcrypt from 'bcrypt'
 import   Usuario from '../models/Usuario.js'
 import {generarId, generarJWT} from '../helpers/tokens.js'
-import { emailRecuperacion, emailRegistro} from '../helpers/emails.js'
+import {   emailOlvidePassword , emailRegistro} from '../helpers/emails.js'
 
 
 
@@ -249,7 +249,7 @@ const  resetPassword   =  async (req , res) => {
     await usuario.save();
 
     //Enviar email:
-   emailRecuperacion({
+    emailOlvidePassword({
     email:usuario.email,
     nombre:usuario.nombre,
     token:usuario.token
