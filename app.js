@@ -1,20 +1,14 @@
 import  express  from  'express';
 import csrf from 'csurf';
+import cookieParser from 'cookie-parser';
 import userRutas from './routes/userRutas.js'
 import propiedadesRoutes from './routes/propiedadesRoutes.js'
 import appRoutes from './routes/appRoutes.js'
 import apiRoutes from './routes/apiRoutes.js'
-import cookieParser from 'cookie-parser';
 import db from './config/db.js';
-
-
-
-
-
 
 //crear la app
 const app = express()
-
 
 // Habilitar lectura de Datos de formularios:
 app.use(express.urlencoded({extended: true}))
@@ -48,7 +42,6 @@ app.use('/', propiedadesRoutes)
 app.use('/api',apiRoutes)
 
 const port = process.env.PORT || 3000;
-
 app.listen( 3000,  () => {
   console.log(`El servidor esta funcionando en el puerto ${port}`);
 });
