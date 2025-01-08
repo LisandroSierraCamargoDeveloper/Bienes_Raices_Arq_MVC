@@ -6,7 +6,7 @@ const emailRegistro = async (datos) => {
         port: process.env.EMAIL_PORT,
         auth: {
             user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASSWORD
+            pass: process.env.EMAIL_PASS
         }
     });
 
@@ -35,7 +35,7 @@ const emailOlvidePassword = async (datos) => {
         port: process.env.EMAIL_PORT,
         auth: {
             user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASSWORD
+            pass: process.env.EMAIL_PASS
         }
     });
 
