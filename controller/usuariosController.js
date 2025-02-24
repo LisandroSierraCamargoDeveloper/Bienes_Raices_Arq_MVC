@@ -292,7 +292,6 @@ const  resetPassword   =  async (req , res) => {
 const nuevoPassword = async (req,res)=>{
 
 //Validando Password:
-
 await check('password').isLength({min:6}).withMessage(' Debe tener al menos 6 digitos').run(req)
 let resultado = validationResult(req) 
 //Verificar que el resultado este vacio 

@@ -22,10 +22,9 @@ router.get('/confirmar-cuenta/:token', confirmar )
 router.get('/recuperacion',formulariOlvideMiPassword)
 router.post('/recuperacion',resetPassword)
 
-
 //Almacena el Nuevo Password
-router.get('/Recuperacion/:token',comprobarToken)
-router.post('/Recuperacion/:token',nuevoPassword)
+router.get('/recuperacion/:token',comprobarToken)
+router.post('/recuperacion/:token',nuevoPassword)
 
 
 
