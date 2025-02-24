@@ -17,6 +17,8 @@ router.post('/registro', registrar )
 
 router.get('/confirmar-cuenta/:token', confirmar )
 
+
+//olvidé mi password:
 router.get('/recuperacion',formulariOlvideMiPassword)
 router.post('/recuperacion',resetPassword)
 

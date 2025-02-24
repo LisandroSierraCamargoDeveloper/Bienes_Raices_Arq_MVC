@@ -186,7 +186,7 @@ const guardar = async (req, res) => {
     }
 
 
-    const almacenarImagen = async (req, res, next)  => {
+const almacenarImagen = async (req, res, next)  => {
    
         
      //Extraer datos 
@@ -232,119 +232,118 @@ const guardar = async (req, res) => {
             console.error('Error al guardar la propiedad:', error.message);
         }
 
-    }
+}
 
-    const editar = async (req,res) =>{
+const editar = async (req,res) =>{
 
-            const {id} = req.params
+    const {id} = req.params
 
-            //Validar que la Propiedad Exista:
+    //Validar que la Propiedad Exista:
 
-            const propiedad = await Propiedad.findByPk(id);
+        const propiedad = await Propiedad.findByPk(id);
 
-            if(!propiedad){
-                return  res.redirect('/mis-propiedades');
-            }
-
-           //Comprobar que la Propiedad Pertenece a quien visita esta pagina
-
-        if( propiedad.usuarioId.toString() !== req.usuario.id.toString()){
+        if(!propiedad){
             return  res.redirect('/mis-propiedades');
         }
 
-          //Consultar Modelo de Precio y Categoria 
-        const [categorias, precios] = await Promise.all([
-            Categoria.findAll(),
-            Precio.findAll()
-        ])
+    //Comprobar que la Propiedad Pertenece a quien visita esta pagina
+
+    if( propiedad.usuarioId.toString() !== req.usuario.id.toString()){
+        return  res.redirect('/mis-propiedades');
+    }
+
+    //Consultar Modelo de Precio y Categoria 
+    const [categorias, precios] = await Promise.all([
+    Categoria.findAll(),
+    Precio.findAll()
+    ])
     
-        res.render('propiedades/editar', {
-            pagina: ` Editar Propiedad ${propiedad.titulo}`,
-            csrfToken: req.csrfToken(),
+    res.render('propiedades/editar', {
+        pagina: ` Editar Propiedad ${propiedad.titulo}`,
+        csrfToken: req.csrfToken(),
+        categorias,
+        precios,
+        datos: propiedad
+    })
+
+}
+
+const guardarCambios = async (req, res) => {
+
+    let resultado = validationResult(req)
+
+    if(!resultado.isEmpty()){
+
+    // Consultar Modelo de Precio y Categorias
+    const [categorias, precios] = await Promise.all([
+        Categoria.findAll(),
+        Precio.findAll()
+    ])
+
+
+            
+    return  res.render('propiedades/editar', {
+            pagina: 'Editar Propiedad',
+            csrfToken: req.csrfTok(),
             categorias,
             precios,
-            datos: propiedad
+            errores : resultado.array(),
+            datos: req.body
         })
 
     }
 
-    const guardarCambios = async (req, res) => {
+    const {id} = req.params
 
-      let resultado = validationResult(req)
+    // Validar que la propiedad exista
+    const propiedad = await Propiedad.findByPk(id)
 
-      if(!resultado.isEmpty()){
+    if(!propiedad) {
+        return res.redirect('/mis-propiedades')
+    }
 
-         // Consultar Modelo de Precio y Categorias
-                const [categorias, precios] = await Promise.all([
-                    Categoria.findAll(),
-                    Precio.findAll()
-                ])
+    // Revisar que quien visita la URl, es quien creo la propiedad
+    if(propiedad.usuarioId.toString() !== req.usuario.id.toString() ) {
 
-
-            
-           return  res.render('propiedades/editar', {
-                    pagina: 'Editar Propiedad',
-                    csrfToken: req.csrfTok(),
-                    categorias,
-                    precios,
-                    errores : resultado.array(),
-                    datos: req.body
-                })
-
-             }
-
-             const {id} = req.params
-
-              // Validar que la propiedad exista
-            const propiedad = await Propiedad.findByPk(id)
-
-            if(!propiedad) {
-                return res.redirect('/mis-propiedades')
-            }
-
-            // Revisar que quien visita la URl, es quien creo la propiedad
-            if(propiedad.usuarioId.toString() !== req.usuario.id.toString() ) {
-
-                return res.redirect('/mis-propiedades')
-            }
-
-
-        /////////////Reescribir el Objeto////////////////
-        try {
-            const  { titulo, descripcion, habitaciones, estacionamiento, wc, calle, lat, lng, precio: precioId, categoria :categoriaId} = req.body
-
-            propiedad.set({
-                titulo,
-                descripcion,
-                habitaciones,
-                estacionamiento,
-                wc,
-                calle,
-                lat,
-                lng,
-                precioId,
-                categoriaId
-            })
-
-            await propiedad.save();
-
-            res.redirect('/mis-propiedades');
-            
-        } catch (error) {
-            console.log(error); 
-            
-        }
-
+        return res.redirect('/mis-propiedades')
     }
 
 
+    /////////////Reescribir el Objeto////////////////
+    try {
+    const  { titulo, descripcion, habitaciones, estacionamiento, wc, calle, lat, lng, precio: precioId, categoria :categoriaId} = req.body
 
-    //Eliminando Propiedad:
+        propiedad.set({
+            titulo,
+            descripcion,
+            habitaciones,
+            estacionamiento,
+            wc,
+            calle,
+            lat,
+            lng,
+            precioId,
+            categoriaId
+        })
+
+        await propiedad.save();
+
+    res.redirect('/mis-propiedades');
+            
+    } catch (error) {
+        console.log(error); 
+            
+    }
+
+}
+
+
+
+//Eliminando Propiedad:
 
     const eliminar = async (req,res) =>{
 
-        ///Validacion
-
+       
 
 
         //Consultar la Base de Datos Mediante  "  ID "
@@ -420,9 +419,6 @@ const mostrarPropiedad = async (req , res) =>{
         const { id } = req.params
 
     
-
-        
-
         //conprobar que la propiedad exista:
 
         const propiedad = await Propiedad.findByPk(id, {
@@ -447,10 +443,10 @@ const mostrarPropiedad = async (req , res) =>{
 
             
         })
-     
+
         
 
-    }
+ }
 
 
     const enviarMensaje = async (req, res) => { 
