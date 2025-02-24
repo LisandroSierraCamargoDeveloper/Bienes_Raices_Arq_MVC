@@ -322,10 +322,10 @@ await usuario.save();
 
 //Renderizar Vista de Guardado Exitoso:
 
-res.render('out/confirmar-cuenta',{
-    pagina: 'Password Reestablecido',
-    mensaje:'El Password se Guardo Correctamente'
-});
+    res.render('out/confirmar-cuenta',{
+        pagina: 'Password Reestablecido',
+        mensaje:'El Password se Guardo Correctamente'
+    });
 
 
 }
