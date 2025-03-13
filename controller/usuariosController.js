@@ -207,7 +207,7 @@ const confirmar = async ( req , res  ) => {
 //Reinicio de Password:
 
 const formularioOlvidePassword = (req, res) => {
-    res.render('auth/olvide-password', {
+    res.render('out/olvide-password', {
         pagina: 'Recupera tu acceso a Bienes Raices',
         csrfToken : req.csrfToken(),
     })
@@ -222,7 +222,7 @@ const resetPassword = async (req, res) => {
     // Verificar que el resultado este vacio
     if(!resultado.isEmpty()) {
         // Errores
-        return res.render('auth/olvide-password', {
+        return res.render('out/olvide-password', {
             pagina: 'Recupera tu acceso a Bienes Raices',
             csrfToken : req.csrfToken(),
             errores: resultado.array()
