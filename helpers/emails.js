@@ -23,7 +23,7 @@ const emailRegistro = async (datos) => {
 
             <p>Tu cuenta ya esta lista, solo debes confirmarla en el siguiente enlace: 
 
-            <a href="${process.env.BACKEND_URL}/recuperacion/${token}">Reestablecer Password</a>
+            <a href="${process.env.BACKEND_URL}/out/confirmar-cuenta/${token}">Confirma tu cuenta</a> </p>
 
 
              </p>
