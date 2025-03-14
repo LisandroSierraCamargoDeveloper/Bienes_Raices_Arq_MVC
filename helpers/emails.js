@@ -28,7 +28,7 @@ const emailOlvidePassword = async (datos) => {
 
   try {
     await resend.emails.send({
-      from: 'BienesRaices.com <tu_email_verificado_resend>', // Reemplaza con tu email verificado en Resend
+      from: 'onboarding@resend.dev', // Reemplaza con tu email verificado en Resend
       to: email,
       subject: 'Reestablece tu Password en BienesRaices.com',
       html: `
