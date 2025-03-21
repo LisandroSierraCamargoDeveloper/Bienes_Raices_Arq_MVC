@@ -188,49 +188,39 @@ const guardar = async (req, res) => {
 
 const almacenarImagen = async (req, res, next)  => {
    
-        
-     //Extraer datos 
+         
+    const {id} = req.params
 
-      const {id} =  req.params
-      
-        //Validar que la Propiedad Exista:
+    // Validar que la propiedad exista
+    const propiedad = await Propiedad.findByPk(id)
+    if(!propiedad) {
+        return res.redirect('/mis-propiedades')
+    }
 
-        const propiedad = await Propiedad.findByPk(id);
+    // Validar que la propiedad no este publicada
+    if(propiedad.publicado) {
+        return res.redirect('/mis-propiedades')
+    }
 
-        if(!propiedad){
-            return  res.redirect('/mis-propiedades');
-        }
+    // Validar que la propiedad pertenece a quien visita esta página
+    if( req.usuario.id.toString() !== propiedad.usuarioId.toString() ) {
+        return res.redirect('/mis-propiedades')
+    }
 
-       
-        //Comprobar que la Propiedad no este Publicada
+    try {
+        // console.log(req.file)
 
-        if(propiedad.publicado){
-            return  res.redirect('/mis-propiedades');
-        }  
-        
-      
+        // Almacenar la imagen y publicar propiedad
+        propiedad.Imagen = req.file.filename
+        propiedad.publicado = 1
 
-        //Comprobar que la Propiedad Pertenece a quien visita esta pagina
+        await propiedad.save()
 
-        if( req.usuario.id.toString() !== propiedad.usuarioId.toString()){
-            return  res.redirect('/mis-propiedades');
-        }
+        next()
 
-
-        try {
-           //console.log(req.file)
-             //Almacenar Imagen y Publicar Propiedad 
-             propiedad.Imagen = req.file.filename
-             propiedad.publicado = 1
-
-             await propiedad.save()
-             
-             next()
-
-
-        } catch (error) {
-            console.error('Error al guardar la propiedad:', error.message);
-        }
+    } catch (error) {
+        console.log(error)
+    }
 
 }
 
