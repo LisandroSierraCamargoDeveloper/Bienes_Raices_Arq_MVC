@@ -33,7 +33,8 @@ const admin = async (req, res) =>{
                         limit:limit,
                         offset,
                         where:{
-                            UsuarioId : id
+                            UsuarioId : id,
+                            
                         },
                         include: [
                             {model: Categoria, as:'categoria'},
