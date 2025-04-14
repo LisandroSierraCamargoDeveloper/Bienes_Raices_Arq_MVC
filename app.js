@@ -22,8 +22,15 @@ app.use( csrf({cookie:true}) )
 // Conexion a la base de Datos
 try {
   await db.authenticate();
-  db.sync()
+  await db.sync()
  console.log('conexion correcta a la base de  datos')
+
+ const port = process.env.PORT || 3000;
+ app.listen( 3000,  () => {
+   console.log(`El servidor esta funcionando en el puerto ${port}`);
+ });
+ 
+
 }catch (error) {
   console.log(error)
 }
@@ -41,11 +48,14 @@ app.use('/auth', userRutas)
 app.use('/', propiedadesRoutes)
 app.use('/api',apiRoutes)
 
-const port = process.env.PORT || 3000;
-app.listen( 3000,  () => {
-  console.log(`El servidor esta funcionando en el puerto ${port}`);
+
+
+
+
+
+// Cierra la conexión con Sequelize si el proceso es terminado (Render, Heroku, etc)
+process.on('SIGTERM', async () => {
+  await db.close();
+  console.log('🔌 Conexión cerrada por SIGTERM');
+  process.exit(0);
 });
-
-
-
-
