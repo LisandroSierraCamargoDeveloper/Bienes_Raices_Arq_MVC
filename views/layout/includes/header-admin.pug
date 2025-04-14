@@ -8,6 +8,6 @@ header.bg-indigo-600.p-4
             a(href="/mis-propiedades") Mis Propiedades  
             a(href="") Mi Perfil  
 
-            form(action="/out/cerrar-sesion" method="POST")
+            form(action="/auth/cerrar-sesion" method="POST")
                 input(type="hidden" name="_csrf" value=csrfToken)
                 input(type="submit" class="bg-indigo-800 py-2 px-10 rounded-lg" value="Cerrar Sesión")  
