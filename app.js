@@ -37,7 +37,7 @@ app.set('views', './views');
 app.use(express.static('public'));
 
 app.use('/', appRoutes)
-app.use('/out', userRutas)
+app.use('/auth', userRutas)
 app.use('/', propiedadesRoutes)
 app.use('/api',apiRoutes)
 
