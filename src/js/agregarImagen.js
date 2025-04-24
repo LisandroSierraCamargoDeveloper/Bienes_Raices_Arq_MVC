@@ -5,7 +5,7 @@ const token = document.querySelector('meta[name="csrf-token"]').getAttribute('co
 Dropzone.options.imagen = {
     dictDefaultMessage: 'Sube tus imágenes aquí',
     acceptedFiles: '.png,.jpg,.jpeg',
-    maxFilesize: 1,
+    maxFilesize: 20,
     maxFiles: 1,
     parallelUploads: 1,
     autoProcessQueue: false,
