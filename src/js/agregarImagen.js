@@ -17,27 +17,24 @@ Dropzone.options.imagen = {
     },
     paramName: 'imagen',
 
-    init: function () {
+    init: function(){
         const dropzone = this
-        const btnPublicar = document.querySelector('#publicar')
-
-        let subiendo = false
-
-        btnPublicar.addEventListener('click', function () {
-            if (subiendo) return
-
-            subiendo = true
+        const btnPublicar = document.querySelector("#publicar")
+    
+        btnPublicar.addEventListener('click', function(){
+            // inhabilitar el botón para evitar clicks adicionales
             btnPublicar.disabled = true
+            // opcional: cambiar estilo para indicar que está deshabilitado
+            btnPublicar.classList.add('opacity-50', 'cursor-not-allowed')
+    
             dropzone.processQueue()
         })
-
-        dropzone.on('queuecomplete', function () {
-            subiendo = false
-            btnPublicar.disabled = false
-
+    
+        dropzone.on('queuecomplete', function(){
             if (dropzone.getActiveFiles().length === 0) {
-                window.location.href = '/mis-propiedades'
+                window.location.href = './mis-propiedades'
             }
         })
     }
+    
 }
