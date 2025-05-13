@@ -1,61 +1,67 @@
-import  express  from  'express';
+import express from 'express';
 import csrf from 'csurf';
 import cookieParser from 'cookie-parser';
-import userRutas from './routes/userRutas.js'
-import propiedadesRoutes from './routes/propiedadesRoutes.js'
-import appRoutes from './routes/appRoutes.js'
-import apiRoutes from './routes/apiRoutes.js'
+import userRutas from './routes/userRutas.js';
+import propiedadesRoutes from './routes/propiedadesRoutes.js';
+import appRoutes from './routes/appRoutes.js';
+import apiRoutes from './routes/apiRoutes.js';
 import db from './config/db.js';
 
-//crear la app
-const app = express()
+// Crear la app
+const app = express();
 
-// Habilitar lectura de Datos de formularios:
-app.use(express.urlencoded({extended: true}))
+// Función principal
+const startServer = async () => {
+  try {
+    // Conexión a la base de datos
+    await db.authenticate();
+    await db.sync();
+    console.log('✅ Conexión correcta a la base de datos');
 
-// Habilitar cookie parser:
-app.use( cookieParser() )
+    // Middlewares
+    app.use(express.urlencoded({ extended: true }));
+    app.use(cookieParser());
+    app.use(csrf({ cookie: true }));
 
-//Habilitar CSRF
-app.use( csrf({cookie:true}) )
+    // Carpeta pública
+    app.use(express.static('public'));
 
-// Conexion a la base de Datos
-try {
-  await db.authenticate();
-  await db.sync()
- console.log('conexion correcta a la base de  datos')
+    // Configurar pug
+    app.set('view engine', 'pug');
+    app.set('views', './views');
 
- const port = process.env.PORT || 3000;
- app.listen( 3000,  () => {
-   console.log(`El servidor esta funcionando en el puerto ${port}`);
- });
- 
+    // Rutas
+    app.use('/', appRoutes);
+    app.use('/auth', userRutas);
+    app.use('/', propiedadesRoutes);
+    app.use('/api', apiRoutes);
 
-}catch (error) {
-  console.log(error)
-}
+    // Levantar servidor
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+      console.log(`🚀 El servidor está funcionando en el puerto ${port}`);
+    });
 
-//habilitar pug
-app.set('view engine', 'pug');
-app.set('views', './views');
+  } catch (error) {
+    console.error('❌ Error al conectar con la base de datos:', error);
+    process.exit(1);
+  }
+};
 
+// Iniciar servidor
+startServer();
 
-//carpeta publica
-app.use(express.static('public'));
+// Cerrar conexiones al finalizar proceso
+const closeConnection = async (signal) => {
+  try {
+    await db.close();
+    console.log(`🔌 Conexión cerrada por ${signal}`);
+    process.exit(0);
+  } catch (err) {
+    console.error(`❌ Error cerrando la conexión:`, err);
+    process.exit(1);
+  }
+};
 
-app.use('/', appRoutes)
-app.use('/auth', userRutas)
-app.use('/', propiedadesRoutes)
-app.use('/api',apiRoutes)
-
-
-
-
-
-
-// Cierra la conexión con Sequelize si el proceso es terminado (Render, Heroku, etc)
-process.on('SIGTERM', async () => {
-  await db.close();
-  console.log('🔌 Conexión cerrada por SIGTERM');
-  process.exit(0);
-});
+process.on('SIGTERM', () => closeConnection('SIGTERM'));
+process.on('SIGINT', () => closeConnection('SIGINT'));
