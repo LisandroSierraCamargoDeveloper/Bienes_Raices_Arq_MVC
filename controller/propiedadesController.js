@@ -275,7 +275,7 @@ const guardarCambios = async (req, res) => {
             
     return  res.render('propiedades/editar', {
             pagina: 'Editar Propiedad',
-            csrfToken: req.csrfTok(),
+            csrfToken: req.csrfToken(),
             categorias,
             precios,
             errores : resultado.array(),
