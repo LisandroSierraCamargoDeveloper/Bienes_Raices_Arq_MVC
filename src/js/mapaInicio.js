@@ -4,6 +4,10 @@
     const lng = -118.1618621;
     const mapa = L.map('mapa-inicio').setView([lat, lng], 14)
 
+    setTimeout(() => {
+    mapa.invalidateSize();
+    }, 200);
+
 
     let markers = new L.FeatureGroup().addTo(mapa)
 

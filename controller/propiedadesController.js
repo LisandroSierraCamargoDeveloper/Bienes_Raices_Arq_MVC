@@ -259,6 +259,8 @@ const editar = async (req,res) =>{
 
 }
 
+
+
 const guardarCambios = async (req, res) => {
 
     let resultado = validationResult(req)
