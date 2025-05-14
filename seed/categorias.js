@@ -14,6 +14,9 @@ const cateogrias = [
     },
     {
         nombre: 'Terreno'
+    },
+    {
+        nombre:'Bodega'
     }
 ]
 
